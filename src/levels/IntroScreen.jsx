@@ -7,7 +7,7 @@ export default function IntroScreen({ onStart }) {
         <div className="flex flex-col items-center text-center space-y-8 animate-fadeIn px-4">
             <div className="border-b-2 border-amber-600 pb-4 mb-8 relative">
                 <h1 className="text-5xl md:text-8xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-amber-400 to-amber-700 drop-shadow-lg">
-                    SILENTIUM
+                    Projet : EULALIGHT
                 </h1>
                 <div className="absolute -right-4 -top-4 text-xs text-emerald-500 font-mono border border-emerald-500 px-1 rounded animate-pulse">
                     ACCÈS: AUTORISÉ
@@ -22,10 +22,9 @@ export default function IntroScreen({ onStart }) {
                 <div className="space-y-4 text-sm md:text-base font-light tracking-wide">
                     <p>Chère <strong className="text-amber-100">Eulalie</strong>,</p>
                     <p>
-                        Tu as l'oreille absolue, mais as-tu l'œil absolu ? L'Orchestre ne cherche pas seulement des exécutants, mais des décrypteurs.
+                        On va voir si en plus d'être belle t'es intelligente 😌😌😌
                     </p>
                     <p>
-                        Ce qui suit est un test de résilience. Trois mouvements. Trois époques.
                         Tu devras utiliser tes connaissances sur <strong>Bach</strong>, ta perception des détails cinématographiques et ta logique pure.
                     </p>
                     <div className="p-4 bg-black/40 rounded border border-red-900/30 text-red-200 text-xs font-mono mt-4">

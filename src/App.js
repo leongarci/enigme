@@ -15,6 +15,7 @@ import FinalScreen from './levels/FinalScreen';
 
 // Importation des constantes de configuration
 import { COLORS, LEVELS } from './data/constants';
+import Level5Lotus from "./levels/Level5_Lotus";
 
 export default function App() {
     const [level, setLevel] = useState(LEVELS.INTRO);
@@ -87,6 +88,10 @@ export default function App() {
 
                 {level === LEVELS.SHADOWS && (
                     <Level4Shadows onSolve={nextLevel} addPenalty={addPenalty} />
+                )}
+
+                {level === LEVELS.LOTUS && (
+                    <Level5Lotus onSolve={nextLevel} addPenalty={addPenalty} />
                 )}
 
                 {level === LEVELS.FINAL && (

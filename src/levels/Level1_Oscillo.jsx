@@ -1,8 +1,59 @@
 // src/levels/Level1_Oscillo.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import { Activity, Zap, Grid3X3 } from 'lucide-react';
-// Correction de l'importation pour assurer la résolution du chemin dans votre environnement local
-import HintSystem from '../components/HintSystem.jsx';
+import { Activity, Zap, Grid3X3, Lightbulb, HelpCircle } from 'lucide-react';
+
+/**
+ * Composant local pour remplacer l'import problématique et garantir la compilation.
+ */
+const HintSystemLocal = ({ hints, onUseHint }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [revealedCount, setRevealedCount] = useState(0);
+
+    const revealHint = () => {
+        if (revealedCount < hints.length) {
+            setRevealedCount(prev => prev + 1);
+            if (onUseHint) onUseHint();
+        }
+    };
+
+    return (
+        <div className="absolute top-4 right-4 z-50">
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="p-2 bg-slate-800 border border-amber-500/50 rounded-full text-amber-500 hover:bg-amber-500 hover:text-black transition-all shadow-lg"
+            >
+                <HelpCircle size={20} />
+            </button>
+
+            {isOpen && (
+                <div className="absolute right-0 mt-2 w-64 bg-slate-900 border border-slate-700 rounded-xl p-4 shadow-2xl animate-fadeIn">
+                    <div className="flex items-center gap-2 mb-3 text-amber-500 font-bold text-xs uppercase tracking-widest">
+                        <Lightbulb size={14} />
+                        <span>Indices</span>
+                    </div>
+                    <div className="space-y-3">
+                        {hints.map((hint, i) => (
+                            <div key={i} className="text-[10px] leading-relaxed">
+                                {i < revealedCount ? (
+                                    <p className="text-slate-300 bg-slate-800/50 p-2 rounded border-l-2 border-amber-500">
+                                        {hint.text}
+                                    </p>
+                                ) : (
+                                    <button
+                                        onClick={revealHint}
+                                        className="w-full text-left p-2 bg-slate-800 hover:bg-slate-700 text-slate-500 rounded border border-dashed border-slate-600 transition-colors"
+                                    >
+                                        Débloquer l'indice {i + 1}
+                                    </button>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
 
 export default function OscilloscopeLevel({ onSolve, addPenalty }) {
     const [password, setPassword] = useState("");
@@ -40,27 +91,18 @@ export default function OscilloscopeLevel({ onSolve, addPenalty }) {
     };
 
     // --- LOGIQUE DU CÂBLAGE (Lights Out 3x3) ---
-    // Configuration initiale : mélange spécifique pour garantir la résolution
     const [lights, setLights] = useState([false, true, false, true, true, true, false, true, false]);
 
     const toggleLight = (index) => {
         if (manualUnlocked) return;
-
         const newLights = [...lights];
         const toggle = (i) => { if (i >= 0 && i < 9) newLights[i] = !newLights[i]; };
-
-        // Inverse l'état de la cellule cliquée
         toggle(index);
-
-        // Inverse les voisins directs (Haut, Bas, Gauche, Droite)
         toggle(index - 3);
         toggle(index + 3);
         if (index % 3 !== 0) toggle(index - 1);
         if (index % 3 !== 2) toggle(index + 1);
-
         setLights(newLights);
-
-        // Vérification de la condition de victoire (tous allumés)
         if (newLights.every(light => light === true)) {
             setManualUnlocked(true);
         }
@@ -94,12 +136,11 @@ export default function OscilloscopeLevel({ onSolve, addPenalty }) {
                 ctx.font = 'bold 44px monospace';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText("I LOVE YOU TOO", 0, 0);
+                ctx.fillText("I LOVE YOU TOO ❤️", 0, 0);
                 ctx.font = '40px sans-serif';
-                ctx.fillText("❤️", 0, 60);
+                ctx.fillText("🎶", 0, 60);
                 ctx.restore();
             } else {
-                // Grille de fond (CRT)
                 ctx.strokeStyle = '#1e293b';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
@@ -108,7 +149,9 @@ export default function OscilloscopeLevel({ onSolve, addPenalty }) {
                 ctx.stroke();
 
                 const isClose = Math.abs(frequency - 622) < 5;
-                ctx.strokeStyle = isClose ? '#10b981' : '#ef4444';
+                const isExact = frequency === 622;
+
+                ctx.strokeStyle = isExact ? '#10b981' : isClose ? '#fbbf24' : '#ef4444';
                 ctx.lineWidth = 2;
                 ctx.beginPath();
 
@@ -121,7 +164,6 @@ export default function OscilloscopeLevel({ onSolve, addPenalty }) {
                     let localX = x;
 
                     if (isClose && manualUnlocked) {
-                        // Séquence 1-4-3 positionnée pour la visibilité
                         const start1 = 80;
                         const end1 = start1 + period;
                         const start2 = end1 + 45;
@@ -143,22 +185,21 @@ export default function OscilloscopeLevel({ onSolve, addPenalty }) {
                         }
                     }
 
-                    // Effet de micro-vibrations analogiques
                     const jitter = (Math.random() - 0.5) * 2;
                     const instability = isClose ? 0 : (Math.random() - 0.5) * 15 * (Math.abs(frequency - 622) / 40);
                     const finalFreq = (isClose && manualUnlocked) ? vFreq : frequency / 1000;
 
-                    // L'onde est immobile horizontalement pour faciliter le comptage
                     const wave = Math.sin(localX * finalFreq) * currentGain;
-
                     ctx.lineTo(x, centerY + wave + jitter + instability);
                 }
                 ctx.stroke();
 
-                if (isClose) {
-                    ctx.fillStyle = '#10b981';
-                    ctx.font = '10px monospace';
-                    ctx.fillText(manualUnlocked ? "SIGNAL FIXÉ : COMPTAGE DES CRÊTES POSSIBLE" : "SIGNAL STABILISÉ - FILTRAGE REQUIS", 10, 20);
+                ctx.fillStyle = isExact ? '#10b981' : isClose ? '#fbbf24' : '#ef4444';
+                ctx.font = '10px monospace';
+                if (isExact && manualUnlocked) {
+                    ctx.fillText("RÉSONANCE ATTEINTE : ANALYSE DES CRÊTES", 10, 20);
+                } else if (isClose) {
+                    ctx.fillText(manualUnlocked ? "PROCHE DE LA RÉSONANCE..." : "SIGNAL STABILISÉ - FILTRAGE REQUIS", 10, 20);
                 }
             }
 
@@ -170,7 +211,6 @@ export default function OscilloscopeLevel({ onSolve, addPenalty }) {
 
     const checkPassword = (e) => {
         e.preventDefault();
-        // Le code 143 dérive du nombre de pics (1, 4, puis 3)
         if (password === "143") {
             setShowSuccess(true);
             setTimeout(onSolve, 4500);
@@ -179,7 +219,7 @@ export default function OscilloscopeLevel({ onSolve, addPenalty }) {
 
     return (
         <div className="w-full max-w-5xl animate-fadeIn relative">
-            <HintSystem hints={hints} onUseHint={addPenalty} />
+            <HintSystemLocal hints={hints} onUseHint={addPenalty} />
 
             <div className="flex items-center gap-4 mb-6 text-amber-500 border-b border-amber-900/30 pb-4">
                 <Activity size={32} />
@@ -190,7 +230,6 @@ export default function OscilloscopeLevel({ onSolve, addPenalty }) {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[600px]">
-                {/* PANNEAU DE CONTRÔLE */}
                 <div className="lg:col-span-1 bg-slate-900 border border-slate-700 rounded-lg overflow-hidden flex flex-col">
                     <div className="flex border-b border-slate-700">
                         <button onClick={() => setActiveTab('taquin')} className={`flex-1 py-4 text-xs font-bold uppercase transition-colors ${activeTab === 'taquin' ? 'bg-slate-800 text-amber-500' : 'text-slate-500 hover:text-slate-300'}`}>Calibrage</button>
@@ -203,7 +242,7 @@ export default function OscilloscopeLevel({ onSolve, addPenalty }) {
                                 {taquinSolved ? (
                                     <div className="text-center animate-fadeIn">
                                         <div className="text-emerald-500 font-mono text-xl mb-2 tracking-tighter uppercase font-bold">Cible: 622 Hz</div>
-                                        <p className="text-[10px] text-slate-500">Fréquence de résonance identifiée.</p>
+                                        <p className="text-[10px] text-slate-500 italic">Fréquence de résonance identifiée.</p>
                                     </div>
                                 ) : (
                                     <div className="grid grid-cols-3 gap-1 bg-slate-800 p-1 rounded shadow-inner">
@@ -249,28 +288,40 @@ export default function OscilloscopeLevel({ onSolve, addPenalty }) {
                     </div>
                 </div>
 
-                {/* ÉCRAN OSCILLOSCOPE */}
                 <div className="lg:col-span-2 bg-black border-4 border-slate-800 rounded-xl relative overflow-hidden flex flex-col shadow-2xl">
                     <canvas ref={canvasRef} width={600} height={400} className="w-full h-full object-cover" />
 
                     {!showSuccess && (
-                        <div className="absolute bottom-0 left-0 w-full bg-slate-900/95 border-t border-slate-700 p-4 grid grid-cols-2 gap-4 backdrop-blur-sm">
-                            <div>
-                                <label className="text-[10px] text-amber-500 font-mono block mb-1 uppercase tracking-tighter">Porteuse (Hz)</label>
-                                <input type="range" min="300" max="800" value={frequency} onChange={(e) => setFrequency(Number(e.target.value))} className="w-full accent-amber-500 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer" />
-                                <div className="flex justify-between text-[8px] text-slate-500 mt-1 font-mono uppercase"><span>Min</span><span>Max</span></div>
+                        <div className="absolute bottom-0 left-0 w-full bg-slate-900/95 border-t border-slate-700 p-4 grid grid-cols-2 gap-6 backdrop-blur-sm">
+                            <div className="flex flex-col justify-center">
+                                <div className="flex justify-between items-end mb-1">
+                                    <label className="text-[10px] text-amber-500 font-mono block uppercase tracking-tighter">Porteuse (Hz)</label>
+                                    <span className="text-amber-500 font-mono text-sm font-bold bg-black/40 px-2 py-0.5 rounded border border-amber-900/50 min-w-[60px] text-center shadow-inner">
+                                        {frequency}
+                                    </span>
+                                </div>
+                                <input
+                                    type="range"
+                                    min="300"
+                                    max="800"
+                                    value={frequency}
+                                    onChange={(e) => setFrequency(Number(e.target.value))}
+                                    className="w-full accent-amber-500 h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer"
+                                />
+                                <div className="flex justify-between text-[8px] text-slate-500 mt-1 font-mono uppercase"><span>300 Hz</span><span>800 Hz</span></div>
                             </div>
-                            <div>
+                            <div className="flex flex-col justify-center">
+                                <label className="text-[10px] text-slate-500 font-mono block mb-1 uppercase tracking-tighter">Code d'accès</label>
                                 <form onSubmit={checkPassword} className="flex gap-2">
                                     <input
                                         type="text"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         maxLength={3}
-                                        placeholder="CODE"
-                                        className="w-full bg-black border border-slate-600 text-emerald-500 font-mono text-center text-lg focus:outline-none focus:border-emerald-500 placeholder:text-slate-800"
+                                        placeholder="???"
+                                        className="w-full bg-black border border-slate-600 text-emerald-500 font-mono text-center text-lg focus:outline-none focus:border-emerald-500 placeholder:text-slate-800 rounded"
                                     />
-                                    <button type="submit" className="px-4 bg-slate-700 text-white text-[10px] font-bold hover:bg-emerald-600 transition-colors uppercase tracking-widest rounded">OK</button>
+                                    <button type="submit" className="px-4 bg-slate-700 text-white text-[10px] font-bold hover:bg-emerald-600 transition-colors uppercase tracking-widest rounded shadow-lg">OK</button>
                                 </form>
                             </div>
                         </div>

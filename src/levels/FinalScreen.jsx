@@ -13,16 +13,17 @@ export default function FinalScreen({ timeDisplay }) {
             </div>
 
             <h1 className="text-4xl md:text-6xl font-bold text-amber-500 mb-6 tracking-tighter">
-                ADMISSIBLE
+                CHAMPIONNE
             </h1>
 
             <div className="max-w-2xl bg-slate-900/90 p-10 rounded-xl border border-slate-800 shadow-2xl">
                 <p className="text-xl text-slate-200 mb-6 font-serif leading-relaxed">
-                    Félicitations, Eulalie.
+                    Félicitations ma belle :)
                 </p>
                 <p className="text-slate-400 mb-8">
-                    Tu as prouvé que tu savais écouter au-delà des notes, voir au-delà des images, et lire entre les lignes.
-                    L'Orchestre t'attend. Mais avant cela...
+                    T'as prouvé que tu pouvais réflechir sans te briser le cerveau et j'avoue que je pensais pas que ça
+                    serait possible... Je suis franchement impressionné. Bien joué mon ange j'espère que ça t'aura un
+                    peu amusé :) En tous cas je pense à toi et je te souhaite de joyeuses fêtes ❤️
                 </p>
 
                 <div className="py-6 border-t border-b border-slate-800 mb-8">
@@ -35,7 +36,7 @@ export default function FinalScreen({ timeDisplay }) {
                 </p>
 
                 <div className="mt-8">
-                    <button onClick={() => alert("Félicitations !")} className="bg-amber-600 hover:bg-amber-500 text-slate-900 font-bold py-4 px-10 rounded shadow-lg transition-transform hover:scale-105 uppercase tracking-widest">
+                    <button onClick={() => alert("Boloss t'as cru quoi ya rien du tout 🦕")} className="bg-amber-600 hover:bg-amber-500 text-slate-900 font-bold py-4 px-10 rounded shadow-lg transition-transform hover:scale-105 uppercase tracking-widest">
                         Réclamer la récompense
                     </button>
                 </div>

@@ -14,6 +14,7 @@ export const LEVELS = {
     CINEMA: 2,
     LIBRARY: 3,
     SHADOWS:4,
-    FINAL:5
+    LOTUS:5,
+    FINAL:6
 
 };
