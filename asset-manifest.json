@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/leongarci/enigme/static/css/main.d6d5cbf9.css",
+    "main.js": "/leongarci/enigme/static/js/main.3ff29720.js",
+    "static/js/453.d59aad53.chunk.js": "/leongarci/enigme/static/js/453.d59aad53.chunk.js",
+    "static/media/table.png": "/leongarci/enigme/static/media/table.bb30bc0ee423a18eda1e.png",
+    "static/media/parc.JPG": "/leongarci/enigme/static/media/parc.9865f4b389855087960e.JPG",
+    "static/media/modeleRouge.jpg": "/leongarci/enigme/static/media/modeleRouge.e1b2c920a53265283bae.jpg",
+    "static/media/pierrot.JPG": "/leongarci/enigme/static/media/pierrot.a3e0e63f7ed1f2dd456f.JPG",
+    "static/media/montagneSainteVictoire.jpg": "/leongarci/enigme/static/media/montagneSainteVictoire.377cc8f0546114fd4037.jpg",
+    "static/media/oeillet.jpg": "/leongarci/enigme/static/media/oeillet.04e560526ad1bb41531a.jpg",
+    "static/media/thelma_et_louise.jpg": "/leongarci/enigme/static/media/thelma_et_louise.4e901f35048cb382f01e.jpg",
+    "static/media/MrsHerbertDuckworth.jpg": "/leongarci/enigme/static/media/MrsHerbertDuckworth.0a7c228c5f7fb902463c.jpg",
+    "static/media/brad.jpg": "/leongarci/enigme/static/media/brad.d52cc34057dcfbde1f63.jpg",
+    "static/media/voitureThelma.jpg": "/leongarci/enigme/static/media/voitureThelma.cde3814d4b08c46d1849.jpg",
+    "index.html": "/leongarci/enigme/index.html",
+    "main.d6d5cbf9.css.map": "/leongarci/enigme/static/css/main.d6d5cbf9.css.map",
+    "main.3ff29720.js.map": "/leongarci/enigme/static/js/main.3ff29720.js.map",
+    "453.d59aad53.chunk.js.map": "/leongarci/enigme/static/js/453.d59aad53.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d6d5cbf9.css",
+    "static/js/main.3ff29720.js"
+  ]
+}
